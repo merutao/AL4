@@ -1,5 +1,7 @@
+//GameSceneヘッダー
 #pragma once
 
+//ヘッダファイルのインクルード
 #include "Audio.h"
 #include "DirectXCommon.h"
 #include "Input.h"
@@ -9,6 +11,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "Player.h"
+#include <memory>
 
 /// <summary>
 /// ゲームシーン
@@ -57,7 +60,8 @@ private: // メンバ変数
 	Sprite* sprite_ = nullptr;
 
 	//3Dモデル
-	Model* model_ = nullptr;
+	/*Model* model_ = nullptr*/;
+	std::unique_ptr<Model> model_;
 
 	//ワールドトランスフォーム
 	WorldTransform worldTransform_;
@@ -71,6 +75,8 @@ private: // メンバ変数
 	//Plyer
 	
 	//自キャラ
-	Player* player_ = nullptr;
+	//Player* player_ = nullptr;
+	std::unique_ptr<Player> player_;	//自動的にdeleteするため
+										//置き換え
 
 };

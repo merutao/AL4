@@ -6,8 +6,7 @@ GameScene::GameScene() {}
 
 GameScene::~GameScene() 
 { 
-	delete sprite_;
-	delete model_;
+
 }
 
 void GameScene::Initialize() {
@@ -29,7 +28,8 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 
 	// 3Dモデルの生成
-	model_ = Model::Create();
+	/*model_ = Model::Create();*/
+	model_.reset(Model::Create());
 	
 	//// サウンドデータハンドル
 	//soundDataHandle_ = audio_->LoadWave("fanfare.wav");
@@ -40,10 +40,11 @@ void GameScene::Initialize() {
 	// Player
 
 	// 自キャラ生成
-	player_ = new Player();
-
+	player_ = std::make_unique<Player>();			//自動的にdeleteするため
+													//置き換え
+							 
 	// 自キャラ初期化
-	player_->Initialize(model_, textureHandle_);
+	player_->Initialize(model_.get(), textureHandle_); // ↑同じく
 }
 
 void GameScene::Update()
