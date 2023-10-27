@@ -1,5 +1,6 @@
 #include "GameScene.h"
 #include "TextureManager.h"
+#include "AxisIndicator.h"
 #include <cassert>
 
 GameScene::GameScene() {}
@@ -25,6 +26,7 @@ void GameScene::Initialize() {
 	worldTransform_.Initialize();
 	
 	// ビュープロジェクション
+	viewProjection_.farZ = 600;
 	viewProjection_.Initialize();
 
 	// 3Dモデルの生成
@@ -45,6 +47,25 @@ void GameScene::Initialize() {
 							 
 	// 自キャラ初期化
 	player_->Initialize(model_.get(), textureHandle_); // ↑同じく
+
+	//Skydome
+
+	// 3Dモデル
+	modelSkeydome_.reset(Model::CreateFromOBJ("skydome", true));
+
+	modelGround_.reset(Model::CreateFromOBJ("ground", true));
+
+	//生成
+	skydome_ = std::make_unique<Skydome>();
+
+	ground_ = std::make_unique<Ground>();
+
+	debugCamera_ = new DebugCamera(1280, 720);
+
+	//初期化
+	skydome_->Initialize(modelSkeydome_.get());
+
+	ground_->Initialize(modelGround_.get());
 }
 
 void GameScene::Update()
@@ -63,6 +84,44 @@ void GameScene::Update()
 
 	//自キャラ更新
 	player_->Update();
+
+	//Skydome
+	skydome_->Update();
+
+	//ground
+	ground_->Update();
+
+	//DebugCamera
+	debugCamera_->Update();
+
+	#ifdef _DEBUG
+	if (input_->TriggerKey(DIK_1) && isDebugCameraActive_ == 0) {
+		isDebugCameraActive_ = 1;
+	} else if (input_->TriggerKey(DIK_1) && isDebugCameraActive_ == 1) {
+		isDebugCameraActive_ = 0;
+	}
+#endif
+
+	// カメラの処理
+	if (isDebugCameraActive_ == 1) {
+		// デバックカメラの更新
+		debugCamera_->Update();
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+
+		// ビュープロジェクション行列の転送
+		viewProjection_.TransferMatrix();
+	} else {
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+		// ビュープロジェクション行列の更新と転送
+		viewProjection_.TransferMatrix();
+	}
+
+	// 軸方向の表示を有効にする
+	AxisIndicator::GetInstance()->SetVisible(true);
+	// 軸方向表示が参照するビュープロジェクションを指定する(アドレス渡し)
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 }
 
 void GameScene::Draw() {
@@ -96,6 +155,12 @@ void GameScene::Draw() {
 
 	// 自キャラ更新
 	player_->Draw(viewProjection_);
+
+	//Skydome
+	skydome_->Draw(viewProjection_);
+
+	//ground
+	ground_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

@@ -12,6 +12,9 @@
 #include "WorldTransform.h"
 #include "Player.h"
 #include <memory>
+#include "Skydome.h"
+#include "Ground.h"
+#include "DebugCamera.h"
 
 /// <summary>
 /// ゲームシーン
@@ -63,11 +66,23 @@ private: // メンバ変数
 	/*Model* model_ = nullptr*/;
 	std::unique_ptr<Model> model_;
 
+	//Skydome用
+	std::unique_ptr<Model> modelSkeydome_;
+
+	//Ground用
+	std::unique_ptr<Model> modelGround_;
+
 	//ワールドトランスフォーム
 	WorldTransform worldTransform_;
 	
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
+
+	//デバックカメラ
+	//有効
+	bool isDebugCameraActive_ = false;
+
+	DebugCamera* debugCamera_ = nullptr;
 
 	////サウンドデータハンドル
 	//uint32_t soundDataHandle_ = 0;
@@ -79,4 +94,9 @@ private: // メンバ変数
 	std::unique_ptr<Player> player_;	//自動的にdeleteするため
 										//置き換え
 
+	//Skydome
+	std::unique_ptr<Skydome> skydome_;
+
+	//Ground
+	std::unique_ptr<Ground> ground_;
 };
