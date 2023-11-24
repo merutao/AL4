@@ -48,6 +48,10 @@ void GameScene::Initialize() {
 	// 自キャラ初期化
 	player_->Initialize(model_.get(), textureHandle_); // ↑同じく
 
+	//自キャラのビュープロジェクションに追従カメラビュープロジェクションをセットする
+	//これがないとnullと返される
+	player_->SetViewProjection();
+
 	//Skydome
 
 	// 3Dモデル

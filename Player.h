@@ -31,7 +31,21 @@ public:
 	/// </summary>
 	void Draw(const ViewProjection& viewProjection);
 
+	/// <summary>
+	///  ワールド座標を取得
+	/// </summary>
+	/// <returns></returns>
+	Vector3 GetWorldPosition();
+	const WorldTransform& GetWorldTransform();
+
+	void SetViewProjection(const ViewProjection* viewProjection) {
+		viewProjection_ = viewProjection;
+	}
+
+
 private:
+	//Input
+	Input* input_ = nullptr;
 
 	//ワールドトランスフォーム
 	WorldTransform worldTransform_;
@@ -41,4 +55,7 @@ private:
 
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
+
+	//カメラビュープロジェクション
+	const ViewProjection* viewProjection_ = nullptr;
 };
