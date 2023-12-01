@@ -19,6 +19,7 @@ public:
 	void Initialize();	//初期化
 	void Update();		//更新
 
+	//追従対象のセット
 	void SetTarget(const WorldTransform* target) 
 	{ 
 		target_ = target;

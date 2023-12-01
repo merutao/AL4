@@ -50,7 +50,13 @@ void GameScene::Initialize() {
 
 	//自キャラのビュープロジェクションに追従カメラビュープロジェクションをセットする
 	//これがないとnullと返される
-	player_->SetViewProjection();
+	player_->SetViewProjection(&followCamera_->GetViewProjection());
+
+
+	// 軸方向の表示を有効にする
+	AxisIndicator::GetInstance()->SetVisible(true);
+	// 軸方向表示が参照するビュープロジェクションを指定する(アドレス渡し)
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
 	//Skydome
 
@@ -60,16 +66,29 @@ void GameScene::Initialize() {
 	modelGround_.reset(Model::CreateFromOBJ("ground", true));
 
 	//生成
+
+	//天球
 	skydome_ = std::make_unique<Skydome>();
 
+	//地面
 	ground_ = std::make_unique<Ground>();
 
+	//デバックカメラ
 	debugCamera_ = new DebugCamera(1280, 720);
+
+	//追従カメラ
+	followCamera_ = std::make_unique<FollowCamera>();
 
 	//初期化
 	skydome_->Initialize(modelSkeydome_.get());
 
 	ground_->Initialize(modelGround_.get());
+
+	followCamera_->Initialize();
+
+	// セッター呼び出し
+	// 自キャラのワールドトランスフォームを追従カメラにセット
+	followCamera_->SetTarget(&player_->GetWorldTransform());
 }
 
 void GameScene::Update()
@@ -98,6 +117,9 @@ void GameScene::Update()
 	//DebugCamera
 	debugCamera_->Update();
 
+	//追従カメラ
+	followCamera_->Update();
+
 	#ifdef _DEBUG
 	if (input_->TriggerKey(DIK_1) && isDebugCameraActive_ == 0) {
 		isDebugCameraActive_ = 1;
@@ -116,16 +138,19 @@ void GameScene::Update()
 		// ビュープロジェクション行列の転送
 		viewProjection_.TransferMatrix();
 	} else {
-		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+		
 		// ビュープロジェクション行列の更新と転送
-		viewProjection_.TransferMatrix();
+		viewProjection_.UpdateMatrix();
 	}
 
-	// 軸方向の表示を有効にする
-	AxisIndicator::GetInstance()->SetVisible(true);
-	// 軸方向表示が参照するビュープロジェクションを指定する(アドレス渡し)
-	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+	
+
+	//ビュープロジェクションの反映
+	viewProjection_.matView = followCamera_->GetViewProjection().matView;
+	viewProjection_.matProjection = followCamera_->GetViewProjection().matProjection;
+
+	//ビュープロジェクション魚列の転送
+	viewProjection_.TransferMatrix();
 }
 
 void GameScene::Draw() {
