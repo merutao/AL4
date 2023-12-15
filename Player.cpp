@@ -14,7 +14,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle)
 
 	// テクスチャハンドル
 	textureHandle_ = textureHandle;
-
+	
 	// ワールドトランスフォーム
 	worldTransform_.Initialize();
 }
@@ -57,7 +57,9 @@ void Player::Update()
 		worldTransform_.translation_ = Add(worldTransform_.translation_, move);
 	}
 	//行列を定数バッファに転送
-	worldTransform_.TransferMatrix();
+	/*worldTransform_.TransferMatrix();*/
+
+	worldTransform_.UpdateMatrix();
 }
 
 // Player描画

@@ -36,7 +36,7 @@ void FollowCamera::Update()
 
 		rotationMatrix = MakeRotateYmatrix(viewProjection_.rotation_.y);
 
-		offset = Transform(offset, rotationMatrix);
+		offset = TransformNormal(offset, rotationMatrix);
 
 		// 座標をコピーしてオフセット分ずらす
 		viewProjection_.translation_ = Add(target_->translation_, offset);

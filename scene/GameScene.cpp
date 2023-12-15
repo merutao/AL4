@@ -48,10 +48,6 @@ void GameScene::Initialize() {
 	// 自キャラ初期化
 	player_->Initialize(model_.get(), textureHandle_); // ↑同じく
 
-	//自キャラのビュープロジェクションに追従カメラビュープロジェクションをセットする
-	//これがないとnullと返される
-	player_->SetViewProjection(&followCamera_->GetViewProjection());
-
 
 	// 軸方向の表示を有効にする
 	AxisIndicator::GetInstance()->SetVisible(true);
@@ -66,7 +62,6 @@ void GameScene::Initialize() {
 	modelGround_.reset(Model::CreateFromOBJ("ground", true));
 
 	//生成
-
 	//天球
 	skydome_ = std::make_unique<Skydome>();
 
@@ -89,6 +84,10 @@ void GameScene::Initialize() {
 	// セッター呼び出し
 	// 自キャラのワールドトランスフォームを追従カメラにセット
 	followCamera_->SetTarget(&player_->GetWorldTransform());
+
+		// 自キャラのビュープロジェクションに追従カメラビュープロジェクションをセットする
+	// これがないとnullと返される
+	player_->SetViewProjection(&followCamera_->GetViewProjection());
 }
 
 void GameScene::Update()
