@@ -19,7 +19,7 @@ public:
 	/// <summary>
 	/// Player初期化
 	/// </summary>
-	void Initialize(Model* model, uint32_t textureHandle);
+	void Initialize(Model* modelBody, Model* modelHead, Model* modelL_arm, Model* modelR_arm);
 
 	/// <summary>
 	/// Player処理
@@ -42,6 +42,9 @@ public:
 		viewProjection_ = viewProjection;
 	}
 
+	//浮遊ギミック
+	void InitializeFloatingGimmick();	//初期化
+	void UpdateFloatingGimmick();	//更新
 
 private:
 	//Input
@@ -50,12 +53,27 @@ private:
 	//ワールドトランスフォーム
 	WorldTransform worldTransform_;
 
-	// 3Dモデル
-	Model* model_ = nullptr;
+	WorldTransform worldTransformBody_;
+	WorldTransform worldTransformHead_;
+	WorldTransform worldTransformL_arm_;
+	WorldTransform worldTransformR_arm_;
+
+	//// 3Dモデル
+	//Model* model_ = nullptr;
+
+	//3Dモデル
+	//  モデル
+	Model* modelFighterBody_;
+	Model* modelFighterHead_;
+	Model* modelFighterL_arm_;
+	Model* modelFighterR_arm_;
 
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
 
 	//カメラビュープロジェクション
 	const ViewProjection* viewProjection_ = nullptr;
+	
+	// 浮遊ギミックの媒介変数
+	float floatingParameter_ = 0.0f;
 };

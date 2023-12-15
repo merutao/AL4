@@ -41,13 +41,7 @@ void GameScene::Initialize() {
 
 	// Player
 
-	// 自キャラ生成
-	player_ = std::make_unique<Player>();			//自動的にdeleteするため
-													//置き換え
-							 
-	// 自キャラ初期化
-	player_->Initialize(model_.get(), textureHandle_); // ↑同じく
-
+	
 
 	// 軸方向の表示を有効にする
 	AxisIndicator::GetInstance()->SetVisible(true);
@@ -61,7 +55,19 @@ void GameScene::Initialize() {
 
 	modelGround_.reset(Model::CreateFromOBJ("ground", true));
 
+	modelFighterBody_.reset(Model::CreateFromOBJ("float_Body", true));
+	modelFighterHead_.reset(Model::CreateFromOBJ("float_Head", true));
+	modelFighterL_arm_.reset(Model::CreateFromOBJ("float_L_arm", true));
+	modelFighterR_arm_.reset(Model::CreateFromOBJ("float_R_arm", true));
+
 	//生成
+	// 
+	// // 自キャラ生成と初期化
+	player_ = std::make_unique<Player>();
+	player_->Initialize(
+	    modelFighterBody_.get(), modelFighterHead_.get(), modelFighterL_arm_.get(),
+	    modelFighterR_arm_.get()); // ↑同じく
+
 	//天球
 	skydome_ = std::make_unique<Skydome>();
 
