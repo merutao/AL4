@@ -60,6 +60,9 @@ void GameScene::Initialize() {
 	modelFighterL_arm_.reset(Model::CreateFromOBJ("float_L_arm", true));
 	modelFighterR_arm_.reset(Model::CreateFromOBJ("float_R_arm", true));
 
+	//
+	
+
 	//生成
 	// 
 	// // 自キャラ生成と初期化

@@ -44,6 +44,12 @@ void Player::Initialize(Model* modelBody, Model* modelHead, Model* modelL_arm, M
 //Player処理
 void Player::Update()
 {
+	// 親子付け
+	worldTransformBody_.parent_ = &worldTransform_;
+	worldTransformHead_.parent_ = &worldTransformBody_;
+	worldTransformL_arm_.parent_ = &worldTransformBody_;
+	worldTransformR_arm_.parent_ = &worldTransformBody_;
+
 
 	UpdateFloatingGimmick();
 
@@ -130,7 +136,7 @@ void Player::InitializeFloatingGimmick()
 void Player::UpdateFloatingGimmick()
 {
 	// 浮遊移動のサイクルフレーム
-	const uint16_t cycle = 30;
+	const uint16_t cycle = 60;
 	// 1フレームでパラメータ加算値
 	const float step = 2.0f * 3.14f / cycle;
 	// パラメータを１ステップ分加算
@@ -138,7 +144,7 @@ void Player::UpdateFloatingGimmick()
 	// 2πを超えたらθに戻す
 	floatingParameter_ = std::fmod(floatingParameter_, 2.0f * 3.14f);
 	// 浮遊の振幅＜m＞
-	const float floatingAmplitude = 1.0f;
+	const float floatingAmplitude = 0.2f;
 	// 浮遊を座標に反映
 	worldTransformBody_.translation_.y = std::sin(floatingParameter_) * floatingAmplitude;
 }

@@ -46,6 +46,11 @@ public:
 	void InitializeFloatingGimmick();	//初期化
 	void UpdateFloatingGimmick();	//更新
 
+	void SetParent(const WorldTransform* parent)
+	{
+		worldTransform_.parent_ = parent;
+	}
+
 private:
 	//Input
 	Input* input_ = nullptr;
@@ -67,6 +72,11 @@ private:
 	Model* modelFighterHead_;
 	Model* modelFighterL_arm_;
 	Model* modelFighterR_arm_;
+
+	enum PlayerNum
+	{
+
+	};
 
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
