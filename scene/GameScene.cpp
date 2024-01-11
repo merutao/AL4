@@ -60,16 +60,40 @@ void GameScene::Initialize() {
 	modelFighterL_arm_.reset(Model::CreateFromOBJ("float_L_arm", true));
 	modelFighterR_arm_.reset(Model::CreateFromOBJ("float_R_arm", true));
 
-	//
+	//エネミー
+	modelEnemyBody_.reset(Model::CreateFromOBJ("needle_Body", true));
+	modelEnemyL_arm_.reset(Model::CreateFromOBJ("needle_L_arm", true));
+	modelEnemyR_arm_.reset(Model::CreateFromOBJ("needle_R_arm", true));
+
+	//ハンマーモデル
+	modelHammer_.reset(Model::CreateFromOBJ("hammer", true));
+
+	// 自キャラモデルまとめ
+	//(追加)自キャラにハンマーを持たせる
+	std::vector<Model*> playerModels = {
+		modelFighterBody_.get(), modelFighterHead_.get(), modelFighterL_arm_.get(),
+		modelFighterR_arm_.get(), modelHammer_.get()
+	};
+
+	//エネミーまとめ
+	std::vector<Model*> enemyModels =
+	{
+	    modelEnemyBody_.get(), modelEnemyL_arm_.get(), modelEnemyR_arm_.get()
+	};
+
 	
 
 	//生成
-	// 
-	// // 自キャラ生成と初期化
+	 
+	// 自キャラ生成と初期化
 	player_ = std::make_unique<Player>();
-	player_->Initialize(
-	    modelFighterBody_.get(), modelFighterHead_.get(), modelFighterL_arm_.get(),
-	    modelFighterR_arm_.get()); // ↑同じく
+
+	player_->Initialize(playerModels); 
+
+	//エネミー生成と初期化
+	enemy_ = std::make_unique<Enemy>();
+
+	enemy_->Initialize(enemyModels);
 
 	//天球
 	skydome_ = std::make_unique<Skydome>();
@@ -116,6 +140,9 @@ void GameScene::Update()
 	//自キャラ更新
 	player_->Update();
 
+	//エネミー更新
+	enemy_->Update();
+
 	//Skydome
 	skydome_->Update();
 
@@ -157,8 +184,10 @@ void GameScene::Update()
 	viewProjection_.matView = followCamera_->GetViewProjection().matView;
 	viewProjection_.matProjection = followCamera_->GetViewProjection().matProjection;
 
-	//ビュープロジェクション魚列の転送
+	//ビュープロジェクション魚列の転送 
 	viewProjection_.TransferMatrix();
+	
+	
 }
 
 void GameScene::Draw() {
@@ -190,8 +219,11 @@ void GameScene::Draw() {
 
 	// Player
 
-	// 自キャラ更新
+	// 自キャラ
 	player_->Draw(viewProjection_);
+
+	//エネミー
+	enemy_->Draw(viewProjection_);
 
 	//Skydome
 	skydome_->Draw(viewProjection_);
@@ -217,4 +249,23 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::sceneReset()
+{ 
+	isSceneEnd = false;
+	isClear = true;
+	ClearTimer = 500;
+}
+
+void GameScene::ClearTime() 
+{
+	if (isClear == true) {
+		ClearTimer--;
+		if (ClearTimer <= 0) {
+			isClear = false;
+			isSceneEnd = true;
+			
+		}
+	}
 }

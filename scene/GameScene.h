@@ -16,6 +16,8 @@
 #include "Ground.h"
 #include "DebugCamera.h"
 #include "FollowCamera.h"
+#include "Enemy.h"
+#include <Scene.h>
 
 /// <summary>
 /// ゲームシーン
@@ -48,6 +50,22 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+	bool GetUpdateFlag() { return updateFlag; }
+
+	// シーンのリセット
+	void sceneReset();
+
+	bool isSceneEnd = false;
+
+	bool IsSceneEnd() { return isSceneEnd; }
+
+	SceneType NextScene() { return SceneType::kGameClear; }
+
+	bool GetIsClear() { return isClear; }
+
+	void ClearTime();
+
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -79,6 +97,14 @@ private: // メンバ変数
 	std::unique_ptr<Model> modelFighterL_arm_;
 	std::unique_ptr<Model> modelFighterR_arm_;
 
+	//エネミー
+	std::unique_ptr<Model> modelEnemyBody_;
+	std::unique_ptr<Model> modelEnemyL_arm_;
+	std::unique_ptr<Model> modelEnemyR_arm_;
+
+	//ハンマー
+	std::unique_ptr<Model> modelHammer_;
+
 	//ワールドトランスフォーム
 	WorldTransform worldTransform_;
 	
@@ -109,4 +135,13 @@ private: // メンバ変数
 
 	//追従カメラ
 	std::unique_ptr<FollowCamera> followCamera_;
+
+	//エネミー
+	std::unique_ptr<Enemy> enemy_;
+
+	bool updateFlag = true;
+	
+	bool isClear =true;
+
+	int ClearTimer = 500;
 };

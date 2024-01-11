@@ -6,6 +6,8 @@
 #include "PrimitiveDrawer.h"
 #include "TextureManager.h"
 #include "WinApp.h"
+#include "TitleScene.h"
+#include "GameClear.h"
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -17,6 +19,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	AxisIndicator* axisIndicator = nullptr;
 	PrimitiveDrawer* primitiveDrawer = nullptr;
 	GameScene* gameScene = nullptr;
+	TitleScene* titleScene = nullptr;
+	GameClear* gameClear = nullptr;
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
@@ -61,6 +65,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	gameScene = new GameScene();
 	gameScene->Initialize();
 
+	titleScene = new TitleScene;
+	titleScene->Initialize();
+
+	gameClear = new GameClear;
+	gameClear->Initialize();
+
+	SceneType sceneNo = SceneType::kTitle;
+
 	// メインループ
 	while (true) {
 		// メッセージ処理
@@ -72,8 +84,50 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		imguiManager->Begin();
 		// 入力関連の毎フレーム処理
 		input->Update();
-		// ゲームシーンの毎フレーム処理
-		gameScene->Update();
+		switch (sceneNo) {
+		case SceneType::kTitle:
+			titleScene->Update();
+
+			if (titleScene->IsSceneEnd()==true) {
+				// 次のシーンの値を代入してシーン切り替え
+				sceneNo = titleScene->NextScene();
+
+				// タイトルシーンの初期化、フラグリセット等
+				titleScene->sceneReset();
+			}
+			break;
+		case SceneType::kGamePlay:
+			// ゲームシーンの毎フレーム処理
+			gameScene->Update();
+
+			gameScene->ClearTime();
+			//if (input->TriggerKey(DIK_RETURN)) {
+			//	sceneNo = SceneType::kTitle;
+			///*}*/
+
+			
+			if (gameScene->IsSceneEnd()==true) {
+
+				/*sceneNo = SceneType::kGameClear*/
+				// ゲームシーンの初期化、フラグリセット等
+				gameScene->sceneReset();
+				// 次のシーンの値を代入してシーン切り替え
+				sceneNo = gameScene->NextScene();
+			}
+			break;
+		case SceneType::kGameClear:
+			gameClear->Update();
+
+			if (gameClear->IsSceneEnd()) {
+				// 次のシーンの値を代入してシーン切り替え
+				sceneNo = gameClear->NextScene();
+
+				// タイトルシーンの初期化、フラグリセット等
+				gameClear->sceneReset();
+			}
+			/*gameScene->ClearBGM();*/
+		}
+		
 		// 軸表示の更新
 		axisIndicator->Update();
 		// ImGui受付終了
@@ -81,8 +135,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		// 描画開始
 		dxCommon->PreDraw();
-		// ゲームシーンの描画
-		gameScene->Draw();
+
+		switch (sceneNo) {
+		case SceneType::kTitle:
+			titleScene->Draw();
+			break;
+		case SceneType::kGamePlay:
+			gameScene->Draw();
+			break;
+		case SceneType::kGameClear:
+			gameClear->Draw();
+			break;
+		}
 		// 軸表示の描画
 		axisIndicator->Draw();
 		// プリミティブ描画のリセット
