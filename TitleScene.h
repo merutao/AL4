@@ -54,4 +54,12 @@ private: // メンバ変数
 
 	// スプライト
 	Sprite* spriteTitle_ = nullptr; // タイトル
+	Sprite* spriteTitle2_ = nullptr; // タイトル
+	Sprite* spriteTitle3_ = nullptr; // タイトル
+
+	float titleCount = 0;
+
+	float titleTimer = 2;
+	float titleTimer2 = 15;
+	float titleTimer3 = 2;
 };

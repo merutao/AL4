@@ -7,8 +7,8 @@ void Ground::Initialize(Model* model)
 	model_ = model;
 
 	worldTransform_.Initialize();
-	worldTransform_.scale_ = {1.0f, 1.0f, 1.0f};
-	worldTransform_.UpdateMatrix();
+	worldTransform_.scale_ = {10.0f, 1.0f, 10.0f};
+	worldTransform_.UpdateMatrix();                                                                        
 }
 
 void Ground::Update()

@@ -13,8 +13,8 @@ void Enemy::Initialize(const std::vector<Model*>& models)
 	worldTransformR_arm_.Initialize();
 
 	//腕の初期位置
-	worldTransformL_arm_.translation_ = {0.8f, 1.0f, 0.0f};
-	worldTransformR_arm_.translation_ = {-0.8f, 1.0f, 0.0f};
+	worldTransformL_arm_.translation_ = {0.8f, 2.0f, 0.0f};
+	worldTransformR_arm_.translation_ = {-0.8f, 2.0f, 0.0f};
 
 }
 

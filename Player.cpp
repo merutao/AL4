@@ -37,9 +37,10 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	worldTransformHammer_.Initialize();
 
 	// 自機の頭・両腕の初期位置
-	worldTransformHead_.translation_ = {0.0f, 1.3f, 0.0f};
-	worldTransformL_arm_.translation_ = {-0.5f, 1.0f, 0.0f};
-	worldTransformR_arm_.translation_ = {0.5f, 1.0f, 0.0f};
+	worldTransformHead_.translation_ = {0.0f, 1.4f, 0.0f};
+	worldTransformL_arm_.translation_ = {-0.5f, 0.7f, 0.0f};
+	worldTransformR_arm_.translation_ = {0.5f, 0.7f, 0.0f};
+	worldTransformHammer_.translation_ = {2.1f, 0.5f, 0.0f};
 
 	// 親子付け
 	worldTransformBody_.parent_ = &worldTransform_;
@@ -78,7 +79,10 @@ void Player::Update()
 		default:
 			break;
 		}
+		//ふるまいクエストリセット
 		behaviorRequest_ = std::nullopt;
+
+
 	}
 
 	switch (behavior_) {
@@ -95,6 +99,7 @@ void Player::Update()
 	default:
 		break;
 	}
+	
 
 	//行列を定数バッファに転送
 	/*worldTransform_.TransferMatrix();*/
@@ -147,7 +152,7 @@ void Player::InitializeFloatingGimmick()
 void Player::UpdateFloatingGimmick()
 {
 	// 浮遊移動のサイクルフレーム
-	const uint16_t cycle = 60;
+	const uint16_t cycle = 90;
 	// 1フレームでパラメータ加算値
 	const float step = 2.0f * 3.14f / cycle;
 	// パラメータを１ステップ分加算

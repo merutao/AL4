@@ -53,4 +53,13 @@ private: // メンバ変数
 	// uint32_t bgmHandle_ = 0;
 	// ゴールスプライト
 	Sprite* goalSprite_ = nullptr;
+
+	// フェードアウト
+	Sprite* fadeOutSprite_ = nullptr;
+	Vector4 fadeOutColor_ = {1.0f, 1.0f, 1.0f, 0.0f};
+
+	float fadeOutCount = 0;
+
+	float Count = 0;
+
 };

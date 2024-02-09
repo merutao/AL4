@@ -81,7 +81,15 @@ void GameScene::Initialize() {
 	    modelEnemyBody_.get(), modelEnemyL_arm_.get(), modelEnemyR_arm_.get()
 	};
 
+
+	// フェードイン
+	uint32_t fadeTextureHandle = TextureManager::Load("Title.png");
+	fadeSprite_ = Sprite::Create(fadeTextureHandle, {0, 0});
 	
+	//フェードアウト
+	uint32_t fadeOutTextureHandle = TextureManager::Load("End.png");
+	fadeOutSprite_ = Sprite::Create(fadeOutTextureHandle, {0, 0});
+
 
 	//生成
 	 
@@ -121,6 +129,8 @@ void GameScene::Initialize() {
 		// 自キャラのビュープロジェクションに追従カメラビュープロジェクションをセットする
 	// これがないとnullと返される
 	player_->SetViewProjection(&followCamera_->GetViewProjection());
+
+
 }
 
 void GameScene::Update()
@@ -178,7 +188,25 @@ void GameScene::Update()
 		viewProjection_.UpdateMatrix();
 	}
 
+	//フェードイン
+	fadeColor.w -= 0.005f;
+	fadeSprite_->SetColor(fadeColor);
+
+
+	if (ClearTimer <= 0)
+	{
+		// フェードアウト
+		fadeOutColor_.w += 0.01f;
+	}
+	fadeOutSprite_->SetColor(fadeOutColor_);
+	if (fadeOutColor_.w >= 1.0f)
+	{
+		fadeOutColor_.w = 1.0f;
+
+		fadeOutCount = 1;
+	}
 	
+
 
 	//ビュープロジェクションの反映
 	viewProjection_.matView = followCamera_->GetViewProjection().matView;
@@ -243,7 +271,17 @@ void GameScene::Draw() {
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 
-	sprite_->Draw();
+
+	if (ClearTimer <= 0) {
+		// フェードアウト
+		fadeOutSprite_->Draw();
+
+	}
+	
+	// フェードイン
+	fadeSprite_->Draw();
+
+	
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -256,13 +294,17 @@ void GameScene::sceneReset()
 	isSceneEnd = false;
 	isClear = true;
 	ClearTimer = 500;
+	Initialize();
+	fadeColor = {1.0f, 1.0f, 1.0f, 1.0f};
+	fadeOutCount = 0;
+	fadeOutColor_ = {1.0f, 1.0f, 1.0f, 0.0f};
 }
 
 void GameScene::ClearTime() 
 {
 	if (isClear == true) {
 		ClearTimer--;
-		if (ClearTimer <= 0) {
+		if (fadeOutCount == 1) {
 			isClear = false;
 			isSceneEnd = true;
 			

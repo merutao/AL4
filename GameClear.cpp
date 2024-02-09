@@ -21,14 +21,43 @@ void GameClear::Initialize() {
 	// BGM
 	/*bgmDataHandle_ = audio_->LoadWave("BGM/BGM.mp3");
 	bgmHandle_ = audio_->PlayWave(bgmDataHandle_, false, 0.15f);*/
+
+	// フェードアウト
+	uint32_t fadeOutTextureHandle = TextureManager::Load("Title.png");
+	fadeOutSprite_ = Sprite::Create(fadeOutTextureHandle, {0, 0});
 }
 
 void GameClear::Update() {
 
-	if (input_->TriggerKey(DIK_RETURN)) {
+	/// ゲームパッドの状態を得る変数
+	XINPUT_STATE joyState;
 
+	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
+		if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_A) {
+			Count = 1;
+		}
+	}
+	Sleep(1 * 120);
+
+	if (Count == 1)
+	{
+		// フェードアウト
+		fadeOutColor_.w += 0.1f;
+	}
+
+	
+
+	fadeOutSprite_->SetColor(fadeOutColor_);
+	if (fadeOutColor_.w >= 1.0f) {
+		fadeOutColor_.w = 1.0f;
+
+		fadeOutCount = 1;
+	}
+	
+	if (fadeOutCount == 1) {
 		isSceneEnd = true;
 	}
+	
 }
 
 void GameClear::Draw() {
@@ -68,10 +97,18 @@ void GameClear::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+	
+
+	
 
 	goalSprite_->Draw();
 
-	// スプライト描画後処理
+	if (Count == 1) {
+		// フェードアウト
+		fadeOutSprite_->Draw();
+	}
+
+	//画後処理
 	Sprite::PostDraw();
 
 #pragma endregion
@@ -81,4 +118,10 @@ void GameClear::sceneReset() {
 	isSceneEnd = false;
 	// BGMの停止
 	// audio_->StopWave(bgmHandle_);
+	Initialize();
+	fadeOutColor_ = {1.0f, 1.0f, 1.0f, 0.0f};
+	fadeOutCount = 0;
+
+	Count = 0;
+	
 }

@@ -144,4 +144,16 @@ private: // メンバ変数
 	bool isClear =true;
 
 	int ClearTimer = 500;
+
+	//フェードイン
+	Sprite* fadeSprite_ = nullptr;
+	Vector4 fadeColor = {1.0f, 1.0f, 1.0f, 1.0f};
+
+	//フェードアウト
+	Sprite* fadeOutSprite_ = nullptr;
+	Vector4 fadeOutColor_ = {1.0f, 1.0f, 1.0f, 0.0f};
+
+	float fadeOutCount = 0;
 };
+
+
