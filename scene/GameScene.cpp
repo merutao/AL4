@@ -189,14 +189,14 @@ void GameScene::Update()
 	}
 
 	//フェードイン
-	fadeColor.w -= 0.005f;
+	fadeColor.w -= 0.07f;
 	fadeSprite_->SetColor(fadeColor);
 
 
 	if (ClearTimer <= 0)
 	{
 		// フェードアウト
-		fadeOutColor_.w += 0.01f;
+		fadeOutColor_.w += 0.07f;
 	}
 	fadeOutSprite_->SetColor(fadeOutColor_);
 	if (fadeOutColor_.w >= 1.0f)
