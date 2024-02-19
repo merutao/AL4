@@ -3,6 +3,7 @@
 #include "Vector3.h"
 #include <assert.h>
 #include <cmath>
+#define _USE_MATH_DEFINES
 
 /// <summary>
 /// X軸回転行列
@@ -85,14 +86,14 @@ float Dot(Vector3 v1, Vector3 v2);
 /// </summary>
 /// <param name="v"></param>
 /// <returns></returns>
-float Length(Vector3& v);
+float Length(Vector3 v);
 
 /// <summary>
 /// ベクトルの正規化
 /// </summary>
 /// <param name="v"></param>
 /// <returns></returns>
-Vector3 Normalize(Vector3& v);
+Vector3 Normalize(Vector3 v);
 
 /// <summary>
 ///
@@ -101,7 +102,7 @@ Vector3 Normalize(Vector3& v);
 /// <returns></returns>
 Matrix4x4 Inverse(const Matrix4x4& m);
 
-Vector3 Subtract(const Vector3& v1, const Vector3& v2);
+Vector3 Subtract(Vector3 vector1, Vector3 vector2);
 
 Vector3 Add(const Vector3& v1, const Vector3& v2);
 

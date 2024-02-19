@@ -13,8 +13,8 @@ void TitleScene::Initialize() {
 	uint32_t textureTitle = TextureManager::Load("Title.png");
 	uint32_t textureTitle2 = TextureManager::Load("Title2.png");
 	uint32_t textureTitle3 = TextureManager::Load("Title3.png");
-	//// ルールテクスチャ
-	// uint32_t Luletexture = TextureManager::Load("resources/Lule.png");
+	uint32_t textureAbotan = TextureManager::Load("Abotan.png");
+	
 
 	// スプライト生成
 	spriteTitle_ =
@@ -24,9 +24,9 @@ void TitleScene::Initialize() {
 	spriteTitle3_ =
 	    Sprite::Create(textureTitle3, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, 0.0f});
 
-	// BGM
-	/*bgmDataHandle_ = audio_->LoadWave("BGM/BGM.mp3");
-	bgmHandle_ = audio_->PlayWave(bgmDataHandle_, false, 0.15f);*/
+	spriteAbotan_ =
+		Sprite::Create(textureAbotan, { 0,0 });
+
 }
 
 void TitleScene::Update() {
@@ -64,6 +64,32 @@ void TitleScene::Update() {
 	if (titleCount == 4) {
 		isSceneEnd = true;
 	}
+
+
+	//Aボタンエフェクト処理
+	if (fadeColor_.w >= 1.0f)
+	{
+		fadeCount_ = 0;
+	}
+
+	if (fadeCount_ == 0)
+	{
+		fadeColor_.w -= 0.1f;
+	}
+
+	if (fadeColor_.w <= 0.0f)
+	{
+		fadeCount_ = 1;
+	}
+
+	if (fadeCount_ == 1)
+	{
+		fadeColor_.w += 0.1f;
+	}
+
+	
+
+	spriteAbotan_->SetColor(fadeColor_);
 }
 
 void TitleScene::Draw() {
@@ -103,6 +129,10 @@ void TitleScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+	
+	
+
+
 	if (titleCount == 0)
 	{
 		spriteTitle_->Draw();
@@ -120,6 +150,7 @@ void TitleScene::Draw() {
 		spriteTitle_->Draw();
 	}
 	
+	spriteAbotan_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

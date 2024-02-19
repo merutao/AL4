@@ -57,6 +57,8 @@ public:
 		viewProjection_ = viewProjection;
 	}
 
+	
+
 	//浮遊ギミック
 	void InitializeFloatingGimmick();	//初期化
 	void UpdateFloatingGimmick();	//更新
@@ -77,6 +79,8 @@ public:
 
 	//振るまい
 	Behavior behavior_ = Behavior::kRoot;
+
+	int SetClearCount() { return Count_; }
 
 private:
 	//次の振るまい
@@ -132,4 +136,6 @@ private:
 
 	// フレーム
 	float frameEnd_ = 120;
+
+	int Count_;
 };

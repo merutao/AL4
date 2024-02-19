@@ -44,37 +44,7 @@ void Enemy::Update()
 	BaseCharacter::Update();
 
 
-	////ImGui
-	//ImGui::Begin("Enemy");
-	//float Body[3] = {
-	//    worldTransformBody_.translation_.x, worldTransformBody_.translation_.y,
-	//    worldTransformBody_.translation_.z};
 
-	//float ArmL[3] = {
-	//    worldTransformL_arm_.translation_.x, worldTransformL_arm_.translation_.y,
-	//    worldTransformL_arm_.translation_.z};
-
-	//float ArmR[3] = {
-	//    worldTransformR_arm_.translation_.x, worldTransformR_arm_.translation_.y,
-	//    worldTransformR_arm_.translation_.z};
-
-	//ImGui::SliderFloat3("Head Translation", Body, -30.0f, 30.0f);
-	//ImGui::SliderFloat3("ArmL Translation", ArmL, -10, 10);
-	//ImGui::SliderFloat3("ArmR Translation", ArmR, -30, 30);
-
-	//worldTransformBody_.translation_.x = Body[0];
-	//worldTransformBody_.translation_.y = Body[1];
-	//worldTransformBody_.translation_.z = Body[2];
-
-	//worldTransformL_arm_.translation_.x = ArmL[0];
-	//worldTransformL_arm_.translation_.y = ArmL[1];
-	//worldTransformL_arm_.translation_.z = ArmL[2];
-
-	//worldTransformR_arm_.translation_.x = ArmR[0];
-	//worldTransformR_arm_.translation_.y = ArmR[1];
-	//worldTransformR_arm_.translation_.z = ArmR[2];
-
-	//ImGui::End();
 
 }
 

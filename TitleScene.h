@@ -57,9 +57,15 @@ private: // メンバ変数
 	Sprite* spriteTitle2_ = nullptr; // タイトル
 	Sprite* spriteTitle3_ = nullptr; // タイトル
 
+	Sprite* spriteAbotan_ = nullptr;	//Aボタンエフェクト用
+
+	Vector4 fadeColor_ = { 1.0f,1.0f,1.0f,1.0f };
+
 	float titleCount = 0;
 
 	float titleTimer = 2;
 	float titleTimer2 = 15;
 	float titleTimer3 = 2;
+
+	float fadeCount_ = 0;
 };

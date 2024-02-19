@@ -1,24 +1,33 @@
 ﻿#pragma once
-//ヘッダーファイルのインクルード
-#include "Model.h"
-#include "WorldTransform.h"
-#include "ViewProjection.h"
+#include"Model.h"
+#include"Collider.h"
 
-class BaseCharacter
-{
+class BaseCharacter : public Collider{
 public:
-	virtual void Initialize(const std::vector<Model*>&models);  //初期化
-	virtual void Update();		// 更新
-	virtual void Draw(const ViewProjection& viewProjection);		//描画
+	// デストラクタ
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	virtual void Initialize(const std::vector<Model*>& models);
+
+	/// <summary>
+	/// 更新
+	/// </summary>
+	virtual void Update();
+
+	/// <summary>
+	/// 描画
+	/// </summary>
+	virtual void Draw(const ViewProjection& viewProjection);
 
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 
-	protected:
+	virtual Vector3 GetCenterPosition() const override;
 
-		//モデルデータの配列
-	    std::vector<Model*> models_;
-		//ワールド変換データ
-	    WorldTransform worldTransform_;
-		//ビュープロジェクション
-	    ViewProjection viewProjection_;
+protected:
+	//モデルデータ配列
+	std::vector<Model*> models_;
+	//ワールド変換データ
+	WorldTransform worldTransform_;
 };

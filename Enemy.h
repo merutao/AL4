@@ -2,7 +2,8 @@
 // ヘッダファイルのインクルード
 #include "BaseCharacter.h"
 #include "ImGuiManager.h"
-
+#include "Model.h"
+#include "MT.h"
 
 class Enemy : public BaseCharacter
 {

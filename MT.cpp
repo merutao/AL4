@@ -173,28 +173,19 @@ float Dot(Vector3 v1, Vector3 v2) {
 	return result;
 }
 
-float Length(Vector3& v) {
+float Length(Vector3 v)
+{
 	float result;
-	// result = sqrtf(v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
-	return result = sqrtf(Dot(v, v));
+	result = sqrtf(Dot(v, v));
+	return result;
 }
 
-//Vector3 Normalize(Vector3& v) {
-//	Vector3 result;
-//	float length = Length(v);
-//	result.x = v.x / length;
-//	result.y = v.y / length;
-//	result.z = v.z / length;
-//	return result;
-//}
 
 //Normalize修正
-Vector3 Normalize(Vector3& v) 
-{
+Vector3 Normalize(const Vector3 v) {
 	float len = Length(v);
 	Vector3 result = v;
-	if (len != 0)
-	{
+	if (len != 0) {
 		result.x /= len;
 		result.y /= len;
 		result.z /= len;
@@ -312,11 +303,11 @@ Matrix4x4 Inverse(const Matrix4x4& m) {
 	return result;
 }
 
-Vector3 Subtract(const Vector3& v1, const Vector3& v2) {
-	Vector3 result{};
-	result.x = v1.x - v2.x;
-	result.y = v1.y - v2.y;
-	result.z = v1.z - v2.z;
+Vector3 Subtract(Vector3 vector1, Vector3 vector2) {
+	Vector3 result;
+	result.x = vector1.x - vector2.x;
+	result.y = vector1.y - vector2.y;
+	result.z = vector1.z - vector2.z;
 	return result;
 }
 
